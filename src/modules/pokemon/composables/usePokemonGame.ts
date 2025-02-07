@@ -7,6 +7,9 @@ export const usePokemonGame = () => {
   const pokemons = ref<Pokemon[]>([]);
   const pokemonOptions = ref<Pokemon[]>([]);
 
+  const randomPokemon = computed(
+    () => pokemonOptions.value[Math.floor(Math.random() * pokemonOptions.value.length)],
+  );
   const isLoading = computed(() => pokemons.value.length === 0);
 
   const getPokemons = async (): Promise<Pokemon[]> => {
@@ -29,7 +32,9 @@ export const usePokemonGame = () => {
 
   const getNextOptions = (howMany: number = 4) => {
     gameStatus.value = GameStatus.Playing;
+    //Almacena 4 pokemones
     pokemonOptions.value = pokemons.value.slice(0, howMany);
+    //Almacena todos los pokemone execptos los 4, el metodo corta de 4 para arriba
     pokemons.value = pokemons.value.slice(howMany);
   };
 
@@ -41,6 +46,7 @@ export const usePokemonGame = () => {
     getNextOptions();
 
     console.log(pokemonOptions.value);
+    console.log(randomPokemon.value);
 
     //console.log({ pokemons });
   });
@@ -49,6 +55,7 @@ export const usePokemonGame = () => {
     gameStatus,
     isLoading,
     pokemonOptions,
+    randomPokemon,
     //Methods
     getNextOptions,
   };
