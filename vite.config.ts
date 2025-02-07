@@ -13,4 +13,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  esbuild: {
+    target: 'es2022', // Asegura compatibilidad con .at()
+  },
 });

@@ -1,22 +1,55 @@
-import { onMounted, ref } from 'vue';
-import { GameStatus, type PokemonListResponse } from '../interfaces';
+import { computed, onMounted, ref } from 'vue';
+import { GameStatus, type Pokemon, type PokemonListResponse } from '../interfaces';
 import { pokemonApi } from '../api/pokemonApi';
 
 export const usePokemonGame = () => {
   const gameStatus = ref<GameStatus>(GameStatus.Playing);
+  const pokemons = ref<Pokemon[]>([]);
+  const pokemonOptions = ref<Pokemon[]>([]);
 
-  const getPokemons = async () => {
+  const isLoading = computed(() => pokemons.value.length === 0);
+
+  const getPokemons = async (): Promise<Pokemon[]> => {
     const response = await pokemonApi.get<PokemonListResponse>('/?limit=151');
 
-    //console.log(response.data.results[0].name);
-    console.log(response.data);
+    const pokemonsArray = response.data.results.map((pokemon) => {
+      const urlParts = pokemon.url.split('/');
+
+      const id = urlParts[urlParts.length - 2] ?? 0;
+
+      return {
+        name: pokemon.name,
+        id: +id,
+      };
+    });
+
+    //Desordena los elementos del array
+    return pokemonsArray.sort(() => Math.random() - 0.5);
   };
 
-  onMounted(() => {
-    getPokemons();
+  const getNextOptions = (howMany: number = 4) => {
+    gameStatus.value = GameStatus.Playing;
+    pokemonOptions.value = pokemons.value.slice(0, howMany);
+    pokemons.value = pokemons.value.slice(howMany);
+  };
+
+  onMounted(async () => {
+    //con esta línea se visualiza el loading.
+    //await new Promise((r) => setTimeout(r, 1000));
+
+    pokemons.value = await getPokemons();
+    getNextOptions();
+
+    console.log(pokemonOptions.value);
+
+    //console.log({ pokemons });
   });
 
   return {
     gameStatus,
+    isLoading,
+    pokemonOptions,
+    //Methods
+    getNextOptions,
   };
 };
