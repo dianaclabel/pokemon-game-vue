@@ -7,6 +7,7 @@ export const usePokemonGame = () => {
   const pokemons = ref<Pokemon[]>([]);
   const pokemonOptions = ref<Pokemon[]>([]);
 
+  // obtenemo un pokemon aleatorio de los 4
   const randomPokemon = computed(
     () => pokemonOptions.value[Math.floor(Math.random() * pokemonOptions.value.length)],
   );
@@ -46,7 +47,6 @@ export const usePokemonGame = () => {
     getNextOptions();
 
     console.log(pokemonOptions.value);
-    console.log(randomPokemon.value);
 
     //console.log({ pokemons });
   });

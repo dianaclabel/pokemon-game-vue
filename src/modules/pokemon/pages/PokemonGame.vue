@@ -1,5 +1,8 @@
 <template>
-  <section v-if="isLoading" class="flex flex-col justify-center items-cente h-screen">
+  <section
+    v-if="isLoading || randomPokemon.id === null"
+    class="flex flex-col justify-center items-cente h-screen"
+  >
     <h1 class="text-3xl">Espere por favor</h1>
     <h3 class="animate-pulse">cargando pokemons</h3>
   </section>
@@ -9,10 +12,13 @@
     <h3>{{ randomPokemon }}</h3>
 
     <!-- pokemon picture -->
-    <PokemonPicture />
+    <PokemonPicture
+      :pokemon-id="randomPokemon.id"
+      :show-pokemon="gameStatus !== GameStatus.Playing"
+    />
 
     <!-- pokemon opcions -->
-    <PokemonOptions />
+    <PokemonOptions :options="options" @selected-option="onSelectedOption" />
   </section>
 </template>
 
@@ -20,5 +26,10 @@
 import PokemonOptions from '../components/PokemonOptions.vue';
 import PokemonPicture from '../components/PokemonPicture.vue';
 import { usePokemonGame } from '../composables/usePokemonGame';
-const { randomPokemon, isLoading } = usePokemonGame();
+import { GameStatus } from '../interfaces';
+const { randomPokemon, isLoading, gameStatus, pokemonOptions: options } = usePokemonGame();
+
+const onSelectedOption = (value: number) => {
+  console.log({ value });
+};
 </script>
