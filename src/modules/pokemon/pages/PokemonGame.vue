@@ -10,6 +10,15 @@
   <section v-else class="flex flex-col justify-center items-center w-screen h-screen">
     <h1 class="m-2">¿Quien es este pokemon?</h1>
     <h3 class="capitalize">{{ gameStatus }}</h3>
+    <div class="h-20">
+      <button
+        v-if="gameStatus !== GameStatus.Playing"
+        class="bg-green-400 shadow-md rounded-lg p-2 m-1 cursor-pointer w-40 text-center transition-all hover:bg-green-500 text-neutral-700"
+        @click="getNextRound()"
+      >
+        ¿Jugar de nuevo?
+      </button>
+    </div>
 
     <!-- pokemon picture -->
     <PokemonPicture
@@ -37,6 +46,7 @@ const {
   isLoading,
   gameStatus,
   pokemonOptions: options,
+  getNextRound,
   checkAnswer,
 } = usePokemonGame();
 
