@@ -1,10 +1,10 @@
 import { computed, onMounted, ref } from 'vue';
-import { GameStatus, type Pokemon, type PokemonListResponse } from '../interfaces';
+import { GameRoundStatus, type Pokemon, type PokemonListResponse } from '../interfaces';
 import { pokemonApi } from '../api/pokemonApi';
 import confetti from 'canvas-confetti';
 
 export const usePokemonGame = () => {
-  const gameStatus = ref<GameStatus>(GameStatus.Playing);
+  const gameRoundStatus = ref<GameRoundStatus>(GameRoundStatus.Playing);
   const pokemons = ref<Pokemon[]>([]);
   const pokemonOptions = ref<Pokemon[]>([]);
 
@@ -33,7 +33,7 @@ export const usePokemonGame = () => {
   };
 
   const getNextRound = (howMany: number = 4) => {
-    gameStatus.value = GameStatus.Playing;
+    gameRoundStatus.value = GameRoundStatus.Playing;
     //Almacena 4 pokemones
     pokemonOptions.value = pokemons.value.slice(0, howMany);
     //Almacena todos los pokemone execptos los 4, el metodo corta de 4 para arriba
@@ -44,7 +44,7 @@ export const usePokemonGame = () => {
     const hasWon = randomPokemon.value.id === id;
 
     if (hasWon) {
-      gameStatus.value = GameStatus.Won;
+      gameRoundStatus.value = GameRoundStatus.Won;
       confetti({
         particleCount: 300,
         spread: 150,
@@ -53,7 +53,7 @@ export const usePokemonGame = () => {
       return;
     }
 
-    gameStatus.value = GameStatus.Lost;
+    gameRoundStatus.value = GameRoundStatus.Lost;
   };
 
   onMounted(async () => {
@@ -69,7 +69,7 @@ export const usePokemonGame = () => {
   });
 
   return {
-    gameStatus,
+    gameRoundStatus,
     isLoading,
     pokemonOptions,
     randomPokemon,

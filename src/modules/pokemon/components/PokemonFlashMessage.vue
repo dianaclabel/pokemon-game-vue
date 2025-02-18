@@ -11,17 +11,17 @@
       v-if="showFlashMessage"
       class="flex justify-center text-8xl uppercase z-10 align-center top-1/2 -translate-y-1/2 fixed font-semibold"
     >
-      <p v-if="gameStatus === GameStatus.Won" class="text-green-500">Ganaste</p>
-      <p v-if="gameStatus === GameStatus.Lost" class="text-red-500">Perdiste</p>
+      <p v-if="gameRoundStatus === GameRoundStatus.Won" class="text-green-500">Ganaste</p>
+      <p v-if="gameRoundStatus === GameRoundStatus.Lost" class="text-red-500">Perdiste</p>
     </div>
   </Transition>
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { GameStatus } from '../interfaces';
+import { GameRoundStatus } from '../interfaces';
 
 interface Props {
-  gameStatus: GameStatus;
+  gameRoundStatus: GameRoundStatus;
 }
 
 const props = defineProps<Props>();
@@ -29,11 +29,11 @@ const props = defineProps<Props>();
 const showFlashMessage = ref(false);
 
 watch(
-  () => props.gameStatus,
+  () => props.gameRoundStatus,
   (status) => {
     showFlashMessage.value = false;
 
-    if (status !== GameStatus.Playing) {
+    if (status !== GameRoundStatus.Playing) {
       showFlashMessage.value = true;
       setTimeout(() => {
         showFlashMessage.value = false;
