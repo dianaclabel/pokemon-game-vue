@@ -13,6 +13,7 @@
     >
       <p v-if="gameRoundStatus === GameRoundStatus.Won" class="text-green-500">Ganaste</p>
       <p v-if="gameRoundStatus === GameRoundStatus.Lost" class="text-red-500">Perdiste</p>
+      <p v-if="gameRoundStatus === GameRoundStatus.GameOver" class="text-red-500">Game Over</p>
     </div>
   </Transition>
 </template>

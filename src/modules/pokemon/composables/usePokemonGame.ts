@@ -7,8 +7,10 @@ export const usePokemonGame = () => {
   const gameRoundStatus = ref<GameRoundStatus>(GameRoundStatus.Playing);
   const pokemons = ref<Pokemon[]>([]);
   const pokemonOptions = ref<Pokemon[]>([]);
+  const livesPokemon = ref<number>(3);
+  const scorePokemon = ref<number>(0);
 
-  // obtenemo un pokemon aleatorio de los 4
+  // obtenemos un pokemon aleatorio de los 4
   const randomPokemon = computed(
     () => pokemonOptions.value[Math.floor(Math.random() * pokemonOptions.value.length)],
   );
@@ -50,10 +52,22 @@ export const usePokemonGame = () => {
         spread: 150,
         origin: { y: 0.6 },
       });
+
+      scorePokemon.value += 1;
       return;
     }
 
     gameRoundStatus.value = GameRoundStatus.Lost;
+    livesPokemon.value -= 1;
+    if (livesPokemon.value === 0) {
+      gameRoundStatus.value = GameRoundStatus.GameOver;
+    }
+  };
+
+  const newGame = () => {
+    livesPokemon.value = 3;
+    scorePokemon.value = 0;
+    getNextRound();
   };
 
   onMounted(async () => {
@@ -76,5 +90,8 @@ export const usePokemonGame = () => {
     //Methods
     getNextRound,
     checkAnswer,
+    newGame,
+    livesPokemon,
+    scorePokemon,
   };
 };

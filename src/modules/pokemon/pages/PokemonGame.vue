@@ -9,6 +9,10 @@
 
   <section v-else class="w-screen">
     <div class="flex flex-col justify-center items-center align-center h-screen">
+      <div>
+        <h1 class="m-2 font-bold text-3xl">Vidas:{{ livesPokemon }}</h1>
+        <h1 class="m-2 font-bold text-3xl">Score:{{ scorePokemon }}</h1>
+      </div>
       <h1 class="m-2 font-bold text-3xl">¿Quién es este pokemon?</h1>
 
       <PokemonFlashMessage :gameRoundStatus="gameRoundStatus" />
@@ -28,12 +32,20 @@
       />
 
       <div class="h-15 w-full flex justify-center">
+        <!-- v-if="gameRoundStatus !== GameRoundStatus.Playing" -->
         <button
-          v-if="gameRoundStatus !== GameRoundStatus.Playing"
-          class="bg-green-400 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-green-700 text-white font-bold w-[20%]"
+          v-if="gameRoundStatus == GameRoundStatus.Lost || gameRoundStatus == GameRoundStatus.Won"
+          class="bg-green-400 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-green-600 text-white font-bold w-[20%]"
           @click="getNextRound()"
         >
-          Nuevo juego
+          Siguiente reto
+        </button>
+        <button
+          v-else-if="gameRoundStatus == GameRoundStatus.GameOver"
+          class="bg-amber-300 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-amber-200 text-white font-bold w-[20%]"
+          @click="newGame()"
+        >
+          Nuevo Juego
         </button>
       </div>
     </div>
@@ -54,6 +66,9 @@ const {
   pokemonOptions: options,
   getNextRound,
   checkAnswer,
+  newGame,
+  livesPokemon,
+  scorePokemon,
 } = usePokemonGame();
 
 // const onSelectedOption = (value: number) => {
