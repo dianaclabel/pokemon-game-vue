@@ -32,20 +32,12 @@
       />
 
       <div class="h-15 w-full flex justify-center">
-        <!-- v-if="gameRoundStatus !== GameRoundStatus.Playing" -->
         <button
-          v-if="gameRoundStatus == GameRoundStatus.Lost || gameRoundStatus == GameRoundStatus.Won"
-          class="bg-green-400 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-green-600 text-white font-bold w-[20%]"
+          v-if="gameRoundStatus !== GameRoundStatus.Playing"
+          class="bg-green-400 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-green-700 text-white font-bold w-[20%]"
           @click="getNextRound()"
         >
           Siguiente reto
-        </button>
-        <button
-          v-else-if="gameRoundStatus == GameRoundStatus.GameOver"
-          class="bg-amber-300 mt-4 shadow-md rounded-lg p-2 m-1 cursor-pointer text-center transition-all hover:bg-amber-200 text-white font-bold w-[20%]"
-          @click="newGame()"
-        >
-          Nuevo Juego
         </button>
       </div>
     </div>
@@ -66,7 +58,6 @@ const {
   pokemonOptions: options,
   getNextRound,
   checkAnswer,
-  newGame,
   livesPokemon,
   scorePokemon,
 } = usePokemonGame();
