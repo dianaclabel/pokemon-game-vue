@@ -1,7 +1,7 @@
 <template>
   <section class="mt-5">
     <img v-if="!showPokemon" :src="pokemonImage" class="brightness-0 h-[200px]" />
-    <img v-else :src="pokemonImage" class="fade-in h-[200px]" />
+    <img v-else alt="pokemon image" :src="pokemonImage" class="fade-in h-[200px]" />
   </section>
 </template>
 
