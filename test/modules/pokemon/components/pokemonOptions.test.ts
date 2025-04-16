@@ -1,11 +1,10 @@
 import PokemonOptions from '@/modules/pokemon/components/PokemonOptions.vue';
 import { mount } from '@vue/test-utils';
-import { log } from 'console';
 
 const options = [
   { id: 1, name: 'Bulbasaur' },
-  { id: 1, name: 'Ivyasur' },
-  { id: 1, name: 'Venusaur' },
+  { id: 2, name: 'Ivyasur' },
+  { id: 3, name: 'Venusaur' },
 ];
 
 describe('<PokemonOptions/>', () => {
@@ -33,8 +32,6 @@ describe('<PokemonOptions/>', () => {
       props: { options, blockSelection: false, correctAnswer: 1 },
     });
 
-    const buttons = wrapper.findAll('button');
-
     const [b1, b2, b3] = wrapper.findAll('button');
 
     await b1.trigger('click');
@@ -43,9 +40,44 @@ describe('<PokemonOptions/>', () => {
 
     // console.log(wrapper.emitted('selectedOption'));
 
-    expect(wrapper.emitted().selectedOptions).toBeTruthy();
-    expect(wrapper.emitted().selectedOptions[0]).toEqual([1]);
-    expect(wrapper.emitted().selectedOptions[1]).toEqual([2]);
-    expect(wrapper.emitted().selectedOptions[2]).toEqual([3]);
+    expect(wrapper.emitted().selectedOption).toBeTruthy();
+    expect(wrapper.emitted().selectedOption[0]).toEqual([1]);
+    expect(wrapper.emitted().selectedOption[1]).toEqual([2]);
+    expect(wrapper.emitted().selectedOption[2]).toEqual([3]);
+  });
+
+  test('Should disabled buttons when blockSelection prop is true', () => {
+    const wrapper = mount(PokemonOptions, {
+      props: { options, blockSelection: true, correctAnswer: 1 },
+    });
+
+    const buttons = wrapper.findAll('button');
+
+    buttons.forEach((button) => {
+      const attributes = Object.keys(button.attributes());
+      expect(attributes).toContain('disabled');
+    });
+  });
+
+  test('Should apply correct styling to buttons based on correct/incorrect answer', async () => {
+    const correctAnswer = 2;
+    const wrapper = mount(PokemonOptions, {
+      props: { options, blockSelection: true, correctAnswer },
+    });
+
+    const buttons = wrapper.findAll('button');
+
+    buttons.forEach((button, index) => {
+      if (options[index].id === correctAnswer) {
+        console.log(button.classes());
+        expect((button.classes())).toContain("correct");
+      }else{
+
+        expect((button.classes())).toContain("Incorrect");
+
+      }
+        // expect(button.attributes('class')).toContain('bg-green-500');
+
+    });
   });
 });
